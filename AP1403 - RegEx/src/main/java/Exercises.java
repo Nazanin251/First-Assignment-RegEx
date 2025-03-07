@@ -1,3 +1,5 @@
+import java.util.regex.Pattern;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -9,7 +11,7 @@ public class Exercises {
         complete the method below, so it will validate an email address
      */
     public boolean validateEmail(String email) {
-        String regex = ""; // todo
+        String regex = "^[\\w.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // todo
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
 
@@ -23,6 +25,10 @@ public class Exercises {
      */
     public String findDate(String string) {
         // todo
+        String regex = "(\\d{1,2}[-/]\\d{1,2}[-/]\\d{4})|(\\d{4}[-/]\\d{1,2}[-/]\\d{1,2})";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(string);
+        if(matcher.find()) return matcher.group();
         return null;
     }
 
@@ -36,10 +42,24 @@ public class Exercises {
         - at least one number and at least a special char "!@#$%^&*"
         - has no white-space in it
      */
-    public int findValidPasswords(String string) {
-        // todo
-        return -1;
+  
+
+
+    public int findValidPasswords(String input) {
+        int counter=0;
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])(?=\\S+$).{8,}$";
+      
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(string);
+        while(matcher.find()){
+            counter++;
+        }
+        return counter;
+        
+       
+        
     }
+
 
     /*
         you should return a list of *words* which are palindromic
@@ -49,7 +69,12 @@ public class Exercises {
      */
     public List<String> findPalindromes(String string) {
         List<String> list = new ArrayList<>();
-        // todo
+        String regex ="\\b(?i)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w)\\S?\\10\\9\\8\\7\\6\\5\\4\\3\\2\\1\\b";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(string);
+        while(matcher.find()){
+            list.add(matcher.group());
+        }
         return list;
     }
 
