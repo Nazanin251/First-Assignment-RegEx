@@ -1,5 +1,3 @@
-import java.util.regex.Pattern;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,7 +9,7 @@ public class Exercises {
         complete the method below, so it will validate an email address
      */
     public boolean validateEmail(String email) {
-        String regex = "^[\\w.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // todo
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\\.[a-zA-Z]{2,})+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
 
@@ -24,12 +22,11 @@ public class Exercises {
         if there's no match for a date, return null
      */
     public String findDate(String string) {
-        // todo
-        String regex = "(\\d{1,2}[-/]\\d{1,2}[-/]\\d{4})|(\\d{4}[-/]\\d{1,2}[-/]\\d{1,2})";
-        Pattern pattern=Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(string);
-        if(matcher.find()) return matcher.group();
-        return null;
+        String regex = "\\b((?:19|20)\\d{2}[-/](?:0[1-9]|1[0-2])[-/](?:0[1-9]|[12][0-9]|3[01])|(?:0[1-9]|[12][0-9]|3[01])[-/](?:0[1-9]|1[0-2])[-/](?:19|20)\\d{2})\\b";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+
+        return matcher.find() ? matcher.group() : null;
     }
 
     /*
@@ -42,24 +39,16 @@ public class Exercises {
         - at least one number and at least a special char "!@#$%^&*"
         - has no white-space in it
      */
-  
-
-
-    public int findValidPasswords(String input) {
-        int counter=0;
-        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])(?=\\S+$).{8,}$";
-      
+    public int findValidPasswords(String string) {
+        int counter = 0;
+        String regex = "\\b(?=.*[a-zA-Z][^ ])(?=.*\\d[^ ])(?=.*[@$!%*#?&][^ ])[a-zA-Z\\d@$!%*#?&]{8,}\\b";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(string);
-        while(matcher.find()){
+        Matcher matcher = pattern.matcher(string);
+        while (matcher.find()) {
             counter++;
         }
         return counter;
-        
-       
-        
     }
-
 
     /*
         you should return a list of *words* which are palindromic
@@ -69,13 +58,30 @@ public class Exercises {
      */
     public List<String> findPalindromes(String string) {
         List<String> list = new ArrayList<>();
-        String regex ="\\b(?i)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w?)(\\w)\\S?\\10\\9\\8\\7\\6\\5\\4\\3\\2\\1\\b";
-        Pattern pattern=Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(string);
-        while(matcher.find()){
-            list.add(matcher.group());
+        String regex = "\\b[a-zA-Z]{3,}\\b";  // Match words with at least 3 characters
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+
+        while (matcher.find()) {
+            String word = matcher.group();
+            if (isPalindrome(word)) {
+                list.add(word);
+            }
         }
         return list;
+    }
+
+    private boolean isPalindrome(String word) {
+        word = word.toLowerCase(); // Case insensitive check
+        int left = 0, right = word.length() - 1;
+        while (left < right) {
+            if (word.charAt(left) != word.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 
     public static void main(String[] args) {
